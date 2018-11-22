@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title></title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    </head>
+    <body>
+        <form action="" method="POST">
+            {% csrf_token %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:red">
+    <div class="container">
+        <div class="row">
+            <a class="navbar-brand" href="#">88Spares</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/master/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/master/viewtable">Data Table <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </nav>
+    <br>
+    <div class="container">
+        <div class="row">
+                <input type="text" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Search for Table..." title="Type in a name">
+            
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col" colspan="2">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tbd">
+                        {% for posts in datatable %}               
+                        <tr id="item-clone"></tr>
+                            <th style="width:1000px;"><a href="/master/viewsdetails/{{ posts.id }}" style="text-decoration:none">{{ posts.name }}</a></th>
+                            <td><a href="/master/dashboard/{{posts.id}}" class="btn btn-success">Edit</a></td>
+                            <td><a href="/master/delete/{{ posts.id }}" class="btn btn-danger">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    $(document).ready(function(){
+        var $rows = $('#tbd tr');
+            $('#myInput').keyup(function(){
+                var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+                $rows.show().filter(function() {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val);
+                }).hide();
+            });
+    })
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</html>

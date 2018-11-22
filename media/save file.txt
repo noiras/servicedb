@@ -1,0 +1,29 @@
+<QuerySet [<ColumnTable: satu File>]>
+ipdb> column_table.name
+*** AttributeError: 'QuerySet' object has no attribute 'name'
+ipdb> views_master
+<MasterTable: dsa>
+ipdb> views_master.name
+'dsa'
+ipdb> column_table
+<QuerySet [<ColumnTable: satu File>]>
+ipdb> column_table[0]
+<ColumnTable: satu File>
+ipdb> col = column_table[0]
+ipdb> col.name
+'satu'
+ipdb> os.path.join(settings.MEDIA_ROOT)
+'D:\\Backup\\dbservice88\\media'
+ipdb> os.path.join(settings.MEDIA_ROOT, col.name)
+'D:\\Backup\\dbservice88\\media\\satu'
+ipdb> os.path.join(settings.MEDIA_ROOT, col.name, filename)
+'D:\\Backup\\dbservice88\\media\\satu\\Screenshot (4).png'
+ipdb> os.path.join(settings.MEDIA_ROOT, views_master.name, col.name, filename)
+'D:\\Backup\\dbservice88\\media\\dsa\\satu\\Screenshot (4).png'
+ipdb> lokasi = os.path.join(settings.MEDIA_ROOT, views_master.name, col.name, filename)
+ipdb> lokasi
+'D:\\Backup\\dbservice88\\media\\dsa\\satu\\Screenshot (4).png'
+ipdb> with open(lokasi, 'wb') as f:
+          f.write(myfile.read())
+0
+ipdb>

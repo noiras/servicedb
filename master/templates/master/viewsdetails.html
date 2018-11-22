@@ -1,0 +1,462 @@
+
+<html>
+    <head>
+        <title>Database Service</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>   
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:red">
+    <div class="container">
+        <div class="row">
+            <a class="navbar-brand" href="#">88Spares</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/master/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/master/viewtable">Data Table <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                
+                
+                <button class="btn btn-primary" style="margin-left:800px;" id="add">ADD</button>
+                <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Add Value</h5>
+                        </div>
+                        <div class="modal-body">
+                          
+                            <table align='center'>
+                            {% for modal in column_list %}
+                                <tr>
+                                    <td><input type="text" class="tableColumn" name="tableColumn" value="{{modal.id}}" readonly="readonly">{{modal.name}}</td>
+                                    <td>:</td>
+                                    <td>
+                                        {% if modal.data_type == 0  %}
+                                            <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="number">
+                                        {% elif modal.data_type == 1 %}
+                                            <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="text">
+                                        {% elif modal.data_type == 2 %}
+                                            <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="number">
+                                        {% elif modal.data_type == 3 %}
+                                            <input type="checkbox" id="valueColumn" name="valueColumn" class="check" value="false"><span class="respon"></span>
+                                        {% elif modal.data_type == 4 %}
+                                            <input type="file" name="valueColumn-{{modal.pk}}" id="attachment-{{ modal.pk }}" class="image-filed" data-identifier="{{ modal.pk }}">
+                                            <input type="text" name="valueColumn" data-index="{{modal.name}}" id="valueColumn" class="value-image val-{{ modal.pk }}">
+                                        <!-- <a href="https://www.base64-image.de/" style="float:right;" target="_blank">Base64</a> -->
+                                        {% elif modal.data_type == 5 %}
+                                        <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="date">
+                                        {% else %}
+                                        <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="text">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </table>                     
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <a id="update" class="btn btn-primary">Update</a>
+                          <button type="submit" class="btn btn-primary" id="save">Save</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+            </div>  
+        </div>
+    </div>
+    </nav>
+    <br>
+    <div class="container">
+        <div class="row">
+      <div class="table-responsive">
+            <input type="text" class="form-control" id="myInput" placeholder="Search for names.." title="Type in a name">
+            <br>    
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr class="header"> 
+                        {% for column in column_list %}
+                             <th id="column_name">{{ column.name }}</th>
+                        {% endfor %}
+                        <th colspan="2" style="text-align:center">action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbd">
+                {% for value in value_list %}
+                    <tr>
+                       <div class="tbody">
+                        {% for i in value %}
+                            <td id="{{i.id}}" data-type="value">
+                                {% if i.value|length >= 200 %}
+                                <img style="width: 100px;" src="{{i.value}}">
+                                {% else %}
+                                <span id="val">{{ i.value }}</span>
+                                {% endif %}
+                                
+                            </td>
+                        {% endfor %}
+                        </div>                       <!-- [{id: "1", value: "abc"}, {} ..]-->
+                        <td style="width:80px;"><a class="btn btn-success" id="edit">Edit</a></td>
+                        <td style="width:100px;"><a href="/master/deletevalue/" class="btn btn-danger" id="delete">Delete</a></td> 
+                    </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12 text-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center pager" id="myPager"></ul>
+                </nav>
+            </div>
+    </div>
+    </body>
+    <script>
+
+        $(document).ready(function(){
+            
+            var table_name = "{{ views_master.name }}";
+
+            $(".image-filed").change(function() {
+                var identifier = $(this).data("identifier");
+                var file       = $("#attachment-" + identifier)[0].files[0].name;
+                
+                var a = $('.val-' + identifier).attr('data-index');
+                $('.val-' + identifier).val('' + table_name  +"/"+ a +"/"+ file);
+            });
+
+            // $("input[type='file']").change(function(){
+            //     var file = $("input[type='file']")[0].files[0].name;
+            //     console.log('/media/' + file);
+            //     $('.value-image').val('' + table_name  +"/"+ a +"/"+ file) 
+            // });
+
+            var $rows = $('#tbd tr');
+            $('#save').show();
+            $('#update').hide();
+            $('#myInput').keyup(function() {
+                var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();    
+                $rows.show().filter(function() {
+                    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                    return !~text.indexOf(val);
+                }).hide();
+            });
+            
+            $('.tableColumn').hide();
+            
+            $('#add').click(function(){
+                $('#exampleModal').modal('show');
+                var check = $('.check').val();
+                
+            });
+
+            $('#close').click(function(){
+                location.reload(true);
+            })
+
+            var column_name = $('thead').children().children('#column_name');
+            var column_list = [];
+            for (var i=0;i<column_name.length;i++){
+                column_list.push(column_name[i].textContent)
+            }
+            
+            $("input[type='checkbox']").on('change', function(){
+                $(this).val(this.checked ? "true" : "false");
+            })
+
+            var id_data_update = [];
+            var val_data_update = [];
+            $('#update').click(function(){
+                    var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+                    
+                    event.stopPropagation();
+                    event.preventDefault();
+                    var a = $('[name="valueColumn"]').length;
+                    var b = [];
+                    for (var i = 0; i < a; i++) {            
+                        var c = $('#'+i).val();
+                        b.push(c)
+                    }
+                    
+                    var column_name = $('.value-image').attr('data-index');
+                    var formData = new FormData();
+                    // var value_column = $("['valueColumn']").val();
+                    
+                    
+                    // // console.log(vals);
+                    // formData.append("id", String(id_data_update));
+                    // formData.append("table_name", String(table_name));
+                    // formData.append("column_name", String(column_name));
+                    // formData.append("val", String(b));
+                    // formData.append("csrfmiddlewaretoken", String(csrftoken));
+                    if($('.image-filed').attr('type') != 'file'){
+                        
+                        formData.append("id", String(id_data_update));
+                        formData.append("table_name", String(table_name));
+                        formData.append("column_name", String(column_name));
+                        formData.append("val", String(b));
+                        formData.append("csrfmiddlewaretoken", String(csrftoken));
+                    }else{
+                        
+                        formData.append("id", String(id_data_update));
+                        formData.append("table_name", String(table_name));
+                        formData.append("column_name", String(column_name));
+                        formData.append("val", String(b));
+                        formData.append("csrfmiddlewaretoken", String(csrftoken));
+                        formData.append('image', $('input[type=file]')[0].files[0]);
+                    }
+                    
+                    // formData.append("value_column", value_column);
+                    
+                        
+                        if(formData){
+                            $.ajax({
+                                type:'POST',
+                                url:'/master/updatevalue/',
+                                data: formData,
+                                    
+                                processData: false,
+                                contentType: false,
+                                success:function(){
+                                    alert('success');
+                                    location.reload(true);
+                                }
+                            })
+                        }
+                    
+            })
+
+
+            function handler( event ){
+                var target = $(event.target);
+                if(target.is('#edit')){
+                    $('#update').show();
+                    $('#save').hide();
+                    
+                   var a = target.parent().parent().children('#name').children();
+                   var obj = {}
+                   for (var i=0;i<a.length;i++){
+                        obj[column_list[i]] = a[i].textContent;
+                    }
+                    var b = Object.keys(obj);
+                    
+                    var id_val = $(this).parent().parent().children().attr('id');
+                    var tr = $(this).parents('tr');
+                    var result = []
+                    tr.children().each(function(index, elem){
+                        if (elem.dataset.type == "value"){
+                            result.push({
+                                id: elem.id,
+                                value: $(elem).text()
+                            })
+                        }
+                    });
+                    
+                    for(var j=0;j<result.length;j++){                        
+                        id_data_update.push(result[j].id)
+                        val_data_update.push(result[j].value.trim())
+                    }
+                    console.log(val_data_update);
+                    $.each(val_data_update, function(i,l){
+                        if($('#valueColumn').attr('type') == 'number'){
+                            $('#valueColumn').attr('id',i);
+                            h = parseInt(l);
+                            $('#' + i).val(h);
+                        }else{
+                            $('#valueColumn').attr('id',i);
+                            console.log(a);
+                            $('#' + i).val(l.trim());
+                            
+                        }
+                    })
+                    var check = $('.check').val();
+                    
+                    if(check == 'true'){
+                        $('input[type="checkbox"]').attr('checked', 'checked')
+                    }else{
+                        $('input[type="checkbox"]').removeAttr('checked')
+                    }
+                    $('#exampleModal').modal('show');
+                      
+                }
+                if(target.is('#delete')){
+                    
+                    var a = target.parent().parent().children('#name').children();
+                   var obj = {}
+                   for (var i=0;i<a.length;i++){
+                        obj[column_list[i]] = a[i].textContent;
+                    }
+                    var b = Object.keys(obj);
+                   
+                    
+                    var id_val = $(this).parent().parent().children().attr('id');
+                    var tr = $(this).parents('tr');
+                    var result = []
+                    tr.children().each(function(index, elem){
+                        if (elem.dataset.type == "value"){
+                            result.push({
+                                id: elem.id,
+                                value: $(elem).text()
+                            })
+                        }
+                    });
+                   
+                    var id_data = [];
+                    var val_data = [];
+                    for(var j=0;j<result.length;j++){                        
+                        id_data.push(result[j].id)
+                        val_data.push(result[j].value)
+                    }
+                    
+                    var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+                    event.stopPropagation();
+                    event.preventDefault();
+                    $.ajax({
+                        type:'POST',
+                        url:'/master/deletevalue/',
+                        data:{
+                            id: String(id_data),
+                            val: String(val_data),
+                            
+                            csrfmiddlewaretoken: csrftoken,
+                        },
+                        success:function(data){
+                            alert('success')                
+                            location.reload(true);
+                        }
+                    })
+                }
+                console.log(obj);
+                
+
+                   
+            }
+            $( "a" ).click( handler ).find( "td" ).text();  
+            $('#tbd').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:5});
+             
+        });
+        
+
+    $.fn.pageMe = function(opts){
+    var $this = this,
+        defaults = {
+            perPage: 7,
+            showPrevNext: false,
+            hidePageNumbers: false
+        },
+        settings = $.extend(defaults, opts);
+    
+    var listElement = $this;
+    var perPage = settings.perPage; 
+    var children = listElement.children();
+    var pager = $('.pager');
+    
+    if (typeof settings.childSelector!="undefined") {
+        children = listElement.find(settings.childSelector);
+    }
+    
+    if (typeof settings.pagerSelector!="undefined") {
+        pager = $(settings.pagerSelector);
+    }
+    
+    var numItems = children.size();
+    var numPages = Math.ceil(numItems/perPage);
+
+    pager.data("curr",0);
+    
+    if (settings.showPrevNext){
+        $('<li class="page-item"><a href="#" class="page-link prev_link">«</a></li>').appendTo(pager);
+    }
+    
+    var curr = 0;
+    while(numPages > curr && (settings.hidePageNumbers==false)){
+        $('<li class="page-item"><a href="#" class="page-link page_link">'+(curr+1)+'</a></li>').appendTo(pager);
+        curr++;
+    }
+    
+    if (settings.showPrevNext){
+        $('<li class="page-item"><a href="#" class="page-link next_link">»</a></li>').appendTo(pager);
+    }
+    
+    pager.find('.page_link:first').addClass('active');
+    pager.find('.prev_link').hide();
+    if (numPages<=1) {
+        pager.find('.next_link').hide();
+    }
+      pager.children().eq(1).addClass("active");
+    
+    children.hide();
+    children.slice(0, perPage).show();
+    
+    pager.find('li .page_link').click(function(){
+        var clickedPage = $(this).html().valueOf()-1;
+        goTo(clickedPage,perPage);
+        return false;
+    });
+    pager.find('li .prev_link').click(function(){
+        previous();
+        return false;
+    });
+    pager.find('li .next_link').click(function(){
+        next();
+        return false;
+    });
+    
+    function previous(){
+        var goToPage = parseInt(pager.data("curr")) - 1;
+        goTo(goToPage);
+    }
+     
+    function next(){
+        goToPage = parseInt(pager.data("curr")) + 1;
+        goTo(goToPage);
+    }
+    
+    function goTo(page){
+        var startAt = page * perPage,
+            endOn = startAt + perPage;
+        
+        children.css('display','none').slice(startAt, endOn).show();
+        
+        if (page>=1) {
+            pager.find('.prev_link').show();
+        }
+        else {
+            pager.find('.prev_link').hide();
+        }
+        
+        if (page<(numPages-1)) {
+            pager.find('.next_link').show();
+        }
+        else {
+            pager.find('.next_link').hide();
+        }
+        
+        pager.data("curr",page);
+      	pager.children().removeClass("active");
+        pager.children().eq(page+1).addClass("active");
+    
+    }
+};
+
+    
+    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</html>
