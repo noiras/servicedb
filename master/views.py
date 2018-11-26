@@ -303,7 +303,7 @@ def valuejson(request, id):
                 value_data = value.value
 
             value_per_column.append({
-                'Data type': column.get_data_type_display().lower(),
+                'data_type': column.get_data_type_display().lower(),
                 column.name : value_data
             })
         values.append(value_per_column)
