@@ -32,30 +32,27 @@
     <br>
     <div class="container">
          <div class="row">
-        
             <div class="form-group" style="width:600px;">
                 <label for="exampleInputEmail1">Table Input</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Name Table" aria-label="Recipient's username" aria-describedby="button-addon2" name="tableName" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" id="clone">+</button>
-                        </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" id="clone">+</button>
+                    </div>
                 </div>
             </div>
-
         </div>
         <div class="row">
                 <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Type Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr id="item-clone" class="item">
-                    <th scope="row"><span id="no">1</span></th>
+                    
                     <td>
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Column" style="width:200px;" name="column" required>
@@ -84,11 +81,9 @@
     </body>
     <script>
         $(document).ready(function(){
-            var i = 1;
+            
             $('#clone').click(function(){
-                i = i + 1;
                 $('.item:last').clone(true).appendTo('tbody');
-                $('#no').html(i)
             })
             $(".glyphicon-remove").click(function () {    
                 $(this).closest(".item").remove();
