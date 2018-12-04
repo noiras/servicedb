@@ -57,7 +57,7 @@
                                             <input type="checkbox" id="valueColumn" name="valueColumn" class="check" value="false"><span class="respon"></span>
                                         {% elif modal.data_type == 4 %}
                                             <input type="file" name="valueColumn-{{modal.pk}}" id="attachment-{{ modal.pk }}" class="image-filed" data-identifier="{{ modal.pk }}">
-                                            <input type="text" name="valueColumn" data-index="{{modal.name}}" id="valueColumn" class="value-image val-{{ modal.pk }}">
+                                            <input type="text" name="valueColumn" data-index="{{modal.name}}" id="valueColumn" class="value-image val-{{ modal.pk }}" hidden>
                                         <!-- <a href="https://www.base64-image.de/" style="float:right;" target="_blank">Base64</a> -->
                                         {% elif modal.data_type == 5 %}
                                         <input id="valueColumn" data-index="" name="valueColumn" class="form-control form-control-sm" type="date">
