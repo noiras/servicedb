@@ -19,12 +19,8 @@ def dashboard(request):
         p1.save()
 
         for key, value in dictionary.items():
-            print(key)
-            print(value)
             p2 = ColumnTable(master_table=p1, name=key, data_type=int(value))
             p2.save()
-            
-        print(dictionary)
     
     return render(request,'master/index.html')
 
@@ -49,7 +45,6 @@ def delete(request, id):
     
     masterTable.delete()
     file_path = r"%s\%s" % (settings.MEDIA_ROOT,masterTable.name)
-    print(file_path)
     shutil.rmtree(file_path, ignore_errors=True)
     return redirect('/master/viewtable')
 
@@ -111,7 +106,7 @@ def viewsdetails(request, id):
             value.value = values.lower()
             value.save()
             itemColumn.value.add(value)
-            print(key)
+            
         
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -220,31 +215,31 @@ def deletevalue(request):
         
         for val_data in val:
             s = val_data.strip()
-            print(s[-4:])
+            
             if(s[-4:] == '.jpg'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             elif(s[-4:] == '.png'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             elif(s[-4:] == '.gif'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             elif(s[-4:] == '.JPG'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             elif(s[-4:] == '.PNG'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             elif(s[-4:] == '.GIF'):
                 file_path = r"%s\%s" % (settings.MEDIA_ROOT, s)
                 os.remove(file_path)
-                print(file_path)
+                
             else:
                 print('error')   
         status = 'success'
@@ -255,10 +250,10 @@ def deletevalue(request):
 
 def tablejson(request):
     datajson = MasterTable.objects.all()
-    print(datajson)
+    
     list_Table = []
     for data in datajson:
-        print(data)
+        
         a = data.id
         b = data.name
         responseData = {
@@ -266,7 +261,7 @@ def tablejson(request):
             'id' : a
         }
         list_Table.append(responseData)
-        print(responseData)
+        
     return JsonResponse(list_Table, safe=False)
 
 def valuejson(request, id):
@@ -360,10 +355,9 @@ def viewsaddcolumn(request,id):
         dictionary = dict(zip(list_column, list_data))
         
         p1 = MasterTable(id=table_master.id)
-        print(p1)
+        
         for key, value in dictionary.items():
-            print(key)
-            print(value)
+            
             p2 = ColumnTable(manhster_table=p1, name=key, data_type=int(value))
             p2.save()
         return redirect('/master/viewtable/')

@@ -4,3 +4,5 @@
 *.sqlite3
 media/*
 */__pychache__/*
+.coverage
+/htmlcov/*

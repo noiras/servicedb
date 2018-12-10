@@ -3,11 +3,13 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = 'master  '
+
 urlpatterns = [
-    path('dashboard/', views.dashboard),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/<id>',views.editdashboard),
     path('viewtable/', views.viewtable),
-    path('delete/<id>/', views.delete),
+    path('delete/<id>/', views.delete, name='deleteTable'),
     path('viewsdetails/<id>/', views.viewsdetails),
     path('updatevalue/', views.updatevalue),
     path('deletevalue/', views.deletevalue),
