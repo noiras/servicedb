@@ -20,3 +20,4 @@ six==1.11.0
 traitlets==4.3.2
 wcwidth==0.1.7
 wheel==0.31.1
+coverage==4.5.2
