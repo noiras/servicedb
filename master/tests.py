@@ -35,3 +35,10 @@ class CreateTableTest(TestCase):
 
     def test_view_delete_table(self):
         self.assertEqual(1, 1)
+        # url = reverse('master:deleteTable', args=[10])
+        # data = {
+        #     'id' : '10',
+        # }
+        # self.client.post(path=url, data=data)
+        # master_table = MasterTable.objects.get(id='10')
+        # self.assertEqual(master_table.id, '10')

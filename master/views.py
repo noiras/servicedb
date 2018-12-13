@@ -12,7 +12,7 @@ def dashboard(request):
         table_name = request.POST.get('tableName')
 
         list_column = request.POST.getlist('column')
-        list_data = request.POST.getlist('typeDate')
+        list_data = request.POST.getlist('typeData')
         dictionary = dict(zip(list_column, list_data))
         
         p1 = MasterTable(name=table_name)
@@ -351,7 +351,7 @@ def viewsaddcolumn(request,id):
         table_name = request.POST.get('tableName')
 
         list_column = request.POST.getli9ost('column')
-        list_data = request.POST.getlist('typeDate')
+        list_data = request.POST.getlist('typeData')
         dictionary = dict(zip(list_column, list_data))
         
         p1 = MasterTable(id=table_master.id)
