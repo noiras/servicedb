@@ -7,18 +7,16 @@ app_name = 'master'
 
 urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('dashboard/<id>',views.editdashboard),
-    path('viewtable/', views.viewtable),
-    path('delete/<id>/', views.delete, name='deleteTable'),
-    path('viewsdetails/<id>/', views.viewsdetails),
-    path('updatevalue/', views.updatevalue),
-    path('deletevalue/', views.deletevalue),
-    path('tablejson/', views.tablejson),
-    path('tablejson/<id>', views.valuejson),
-    path('updatecolumn/', views.updatecolumn),
-    path('deletecolumn/', views.deletecolumn),
-    path('viewsaddcolumn/<id>', views.viewsaddcolumn),
+    path('dashboard/<id>',views.view_detail_dashboard, name='detail_dashboard'),
+    path('viewtable/', views.viewtable, name='viewtable'),
+    path('delete/<id>/', views.delete_table, name='deleteTable'),
+    path('viewsdetailstable/<id>/', views.viewsdetailstable,name='detail_table' ),
+    path('updatevalue/', views.updatevalue, name='updatevalue'),
+    path('deletevalue/', views.deletevalue, name='deletevalue'),
+    path('tablejson/', views.tablejson, name='tablejson'),
+    path('tablejson/<id>', views.valuejson, name='detail_tablejson'),
+    path('updatecolumn/', views.updatecolumn, name='updatecolumn'),
+    path('deletecolumn/', views.deletecolumn,name='detailcolumn'),
+    path('viewsaddcolumn/<id>', views.viewsaddcolumn, name='viewsaddcolumn'),
 
-    # tables/
-    # tables/id
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
