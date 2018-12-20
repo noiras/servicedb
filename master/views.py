@@ -24,7 +24,7 @@ def dashboard(request):
     
     return render(request,'master/index.html')
 
-def editdashboard(request, id):
+def view_detail_dashboard(request, id):
     master_table = MasterTable.objects.get(pk=id)
     column_table = ColumnTable.objects.filter(master_table=id)
     context = {
@@ -40,7 +40,7 @@ def viewtable(request):
     }
     return render(request,'master/viewtable.html', context)
 
-def delete(request, id):
+def delete_table(request, id):
     masterTable = MasterTable.objects.get(pk=id)
     
     masterTable.delete()
@@ -52,7 +52,7 @@ def devide_list(l, n):
     for i in range(0, len(l), n):
         yield l[i: i + n]
 
-def viewsdetails(request, id):
+def viewsdetailstable(request, id):
     views_master = MasterTable.objects.get(pk=id)
     column_table = ColumnTable.objects.filter(master_table=id)
     # ValueTable.objects.annotate(value=Count('id')).order_by('-id')
@@ -63,21 +63,6 @@ def viewsdetails(request, id):
     }
 
     if request.method == 'POST':
-       
-
-        """
-        Simpan gambar
-
-        1. tentukan format: media_location/nama_tabel/nama_field/nama_file
-        2. dapatkan media location: settings.MEDIA_ROOT
-        3. dapatkan nama tabel: view_master.name
-        4. dapatkan nama field yang jenisnya gambar: di validasi tipe data terus dapatkan object nama
-        5. dapatkan gambar: myfile  
-        6. save gambar:
-            6.1. bikin format lokasi: os.path.join(settings.MEDIA_ROOT, nama_tabel, nama_kolom, nama_file)
-            6.2. simpan gambar 
-        """
-
         tableColumn = request.POST.getlist('tableColumn')
         valuecolumn = request.POST.getlist('valueColumn')
         dictionary = dict(zip(tableColumn, valuecolumn))
@@ -265,29 +250,11 @@ def tablejson(request):
     return JsonResponse(list_Table, safe=False)
 
 def valuejson(request, id):
-    # table_obj = get_object_or_404(MasterTable, pk=id)
-    # response = {
-    #     "table": table_obj.name,
-    #     "values": []
-    # }
-    # for column_obj in table_obj.columntable_set.all():
-    #     for value_obj in column_obj.value.all():
-    #         if column_obj.data_type == ColumnTable.FILE:
-    #             value_data = "{host}/media/{value}".format(host=request.get_host(), value=value_obj.value)
-    #         else:
-    #             value_data = value_obj.value
-
-    #         column_metadata = {
-    #             "type": column_obj.get_data_type_display().lower(),
-    #             column_obj.name: value_data,
-    #         }
-    #         response["values"].append([column_metadata])
-
+    
 
     views_master = MasterTable.objects.get(pk=id)
     column_table = ColumnTable.objects.filter(master_table=id)
-    # ValueTable.objects.annotate(value=Count('id')).order_by('-id')
-
+    
     values = []
     for column in column_table:     
         value_per_column = []
