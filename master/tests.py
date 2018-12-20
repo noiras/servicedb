@@ -5,16 +5,14 @@ from .models import MasterTable, ColumnTable
 
 
 class CreateTableTest(TestCase):
-
     def setUp(self):
         self.client = Client()
-
     def test_view_create_new_table(self):
         url = reverse('master:dashboard')
         data = {
             'tableName': 'Mahasiswa',
             'column': ['nama', 'alamat'],
-            'typeDate': [ColumnTable.STRING, ColumnTable.STRING]
+            'typeData': [ColumnTable.STRING, ColumnTable.STRING]
         }
         self.client.post(path=url, data=data)
 
@@ -29,16 +27,15 @@ class CreateTableTest(TestCase):
 
         column2 = ColumnTable.objects.get(master_table=master_table, name='alamat')
         self.assertEqual(column2.name, 'alamat')
-
+    
     def test_view_edit_table(self):
         self.assertEqual(1, 1)
 
     def test_view_delete_table(self):
-        self.assertEqual(1, 1)
-        # url = reverse('master:deleteTable', args=[10])
-        # data = {
-        #     'id' : '10',
-        # }
-        # self.client.post(path=url, data=data)
-        # master_table = MasterTable.objects.get(id='10')
-        # self.assertEqual(master_table.id, '10')
+        url = reverse('master:deleteTable', args=[10])
+        data = {
+            'pk' : '10',
+        }
+        self.client.get(path=url, data=data)
+        master_table = MasterTable.objects.get(pk='10')
+        self.assertFalse(master_table.pk, '10')
