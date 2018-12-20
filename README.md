@@ -16,6 +16,13 @@
 # run project
 #   >> Open xampp and running apache, mysql
 #   >> activate vitualenv (vitual environment)
-#   >> open cmd or terminal, enter into the virtualenv folder that has been created, enter the scripts folder and       activate vitualenv
+#   >> open cmd or terminal, enter into the virtualenv folder that has been created, enter the scripts folder and        # activate vitualenv
 #   >> still in cmd or terminal, return to the project, then run ptoject (python manage.py runserver)
 #   >> open browser (localhost:8000-(your port)/master/dashboard)
+# run autotest
+#   >> install coverage -> pip install coverage or u can install in requirement.txt
+#   >> open cmd and run in project -> python manage.py test -v 2 --keepdb 
+#                                  -> coverage run --source=master manage.py test -v 1 --keepdb && coverage html -i (for look in html code, open in your folder project htmlcov and open index.html)
+         
+
+
