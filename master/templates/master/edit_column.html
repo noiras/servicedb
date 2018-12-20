@@ -161,12 +161,11 @@
                 var a = $(this).parent().parent().children().children().find('input');
                 var b = $(this).parent().parent().children().children().find('select');
                 var c = $(this).parent().parent().children().find('.update');
-                // console.log(c);
                 $(this).hide();
                 c.show();
                 a.prop('disabled', false);
                 b.prop('disabled', false);
-                // console.log(b)
+                
             });
 
 
@@ -182,7 +181,6 @@
                 var input_field = $(this).parent().parent().children().children().find('input').val();
                 var data_type = $(this).parent().parent().children().children().find('select').val();
                 var pk = $(this).parent().parent().attr('data-pk');
-                console.log(pk)
                 var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
                     event.stopPropagation();
                     event.preventDefault();
@@ -200,13 +198,10 @@
                             location.reload(true);
                         }
                     })
-                    
-                // console.log(b)
             });
         })
         
     </script>
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
